@@ -1,110 +1,51 @@
-# ![GA Logo](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Project 4: Choose Your Own Adventure
+# Predicting Sentiment of Movie Reviews
 
-Pick a Kaggle competition from the following list. You have the choice of completing a regression problem, a classification problem, or an NLP problem involving either classification or sentiment analysis. Perform some EDA, and fit and evaluate at least two models on the dataset you've chosen.
+This analysis utilizes the Rotten Tomatoes movie review dataset, and uses the available movie reviews to predict whether a given movie review is rated:
+* 0 - negative
+* 1 - somewhat negative
+* 2 - neutral 
+* 3 - somewhat positive
+* 4 - positive
 
-## Datasets
+## Dataset
+- [Sentiment Analysis on Movie Reviews](https://www.kaggle.com/c/sentiment-analysis-on-movie-reviews) 
 
-### Regression
+## Data Overview
 
-- [Restaurant Revenue Prediction](https://www.kaggle.com/c/restaurant-revenue-prediction)
-- [Video Game Sales Prediction](https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings)
-- [Box Office Revenue Prediction](https://www.kaggle.com/c/tmdb-box-office-prediction)
-- [New York City Taxi Fare Prediction](https://www.kaggle.com/c/new-york-city-taxi-fare-prediction)
+The training dataset includes 156060 rows of data, with multiple rows parsing each review into sub-phrases of varying lengths. The dataset was consolidated to parse out the longest phrase for each review, narrowing the dataset down to 8530 unique rows.
 
-### Classification
+The data was then cleaned as follows:
+- All non alphanummeric characters are removed
+- Reviews are all made lower-case
+- Spaces and break characters are removed
+- Additional stop-words are included in the stock stop-words dictionary, and removed
+- The words "film", "movie" and "one" are removed, as they appear in the top 10 most frequently used words for each sentiment rating
+- Reviews are re-built with lemmatied words
 
-- [Predicting a Biological Response](https://www.kaggle.com/c/bioresponse/data)
-- [Kobe Bryant Shot Selection](https://www.kaggle.com/c/kobe-bryant-shot-selection)
-- [Shelter Animal Outcomes](https://www.kaggle.com/c/shelter-animal-outcomes)
-- [Airbnb New User Bookings](https://www.kaggle.com/c/airbnb-recruiting-new-user-bookings)
+## Data Analysis and Evaluation
+Data was analyzed using the following models:
+- Multinomial Bayes
+- Random Forest
+These models resulted in severe overfitting and poor results on test data (with high results on the train data).
 
-### NLP
+- Logistic Regression
+- KNN
+These models resulted in both overfitting and poor results on train and test data.
 
-- [Sentiment Analysis on Movie Reviews](https://www.kaggle.com/c/sentiment-analysis-on-movie-reviews) / [Alternative Sentiment Analysis on Movie Reviews](https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)
-- [What's Cooking?](https://www.kaggle.com/c/whats-cooking)
-- [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews)
+<br>Data was then analyzed using RNN:
+- Sequential models (LSTM)
+- Sequential models (GRU); sacrificing some of the benefits from remembering longer strings (LSTM), Gated Recurrent Unit (GRU) will only take a subset of information into the next layer based on what it deems to be significant to the model 
+- Sequential models (Word2Vec); adjusting word vectors based on existing language syntax captured in the Word2vec model
 
-### Image Classification
+Models were updated with dropout, early stopping and regularization to minimize overfitting.
 
-- [Kannada MNIST](https://www.kaggle.com/c/Kannada-MNIST)
-- [Intel Image Classification](https://www.kaggle.com/puneet6060/intel-image-classification)
+<br>None of the models yielded satisfactory results and did not perform well on test data.
 
-## Timeline
+## Conclusions and Next Steps
+It will be worth trying the following in order to continue finding improvements in model performance:
+- TFIDF and Word2Vec in Multinomial, Logistic, KNN and Random Forest models
+- Continued tweaking within RNN
+- Removing a different subset of stop words or not removing stop words, to better capture language syntax and complex phrases
+- Attempting longer n-grams throughout
 
-- **9am**: Project introduction.
-- **10am**: By 10am, answer the [check-in form](https://forms.gle/kWcfTZjGRj18LHUz6) with the dataset you've chosen.
-- **4pm**: 3-minute lightning talks where you walk us through your process. **No slides necessary** -- it's fine if you'd prefer walk us through your Jupyter notebook instead, but remember you only have 3 minutes!
-- **5pm**: Make sure your project work has been pushed.
 
-## Guidelines
-
-We know this is a short time for a project. We're not expecting anything as polished as project two or three. However, the goal is for you to have something to show for your time. At a minimum, do some EDA and have at least two models fit and scored.
-
-## Rubric
-
-You must meet the 4 criteria outlined below to receive project credit.
-When evaluated against the rubric, we'll take into account that that you had a very limited amount of time to work on this project. Do your best with the time you have.
-
-- Perform basic EDA (examples: report summary statistics, use visuals to explore your dataset)
-- If necessary, perform basic data cleaning (examples: handle null values, clean data entry errors). If not necessary, outlining & interpreting checks and balances completed during EDA to make that determination.
-- Make a baseline model
-- Fit, score, and evaluate at least two models
-- Compare, identify and explain "best" model
-   
-   
-_For additional guidance, you may refer to the detailed breakdown of suggested steps for each given section._
-### Data Cleaning and EDA
-
-- Are missing values imputed/handled appropriately?
-- Are distributions examined and described?
-- Are outliers identified and addressed?
-- Are appropriate summary statistics provided?
-- Are steps taken during data cleaning and EDA framed appropriately?
-
-### Visualizations
-
-- Are sufficient visualizations provided?
-- Do plots accurately demonstrate valid relationships?
-- Are plots labeled properly?
-- Are plots interpreted appropriately?
-- Are plots formatted and scaled appropriately for inclusion in a notebook-based technical report?
-
-### Preprocessing and Modeling
-
-- Are categorical variables appropriately handled?
-- Does the student properly split and/or sample the data for validation/training purposes?
-- Does the student utilize feature selection to remove noisy or multi-collinear features?
-- Does the student test and evaluate a variety of models to identify a production algorithm?
-- Does the student defend their choice of production model relevant to the data at hand and the problem?
-- Does the student explain how the model works and evaluate its performance successes/downfalls?
-
-### Evaluation and Conceptual Understanding
-
-- Does the student accurately identify and explain the baseline score?
-- Does the student select and use metrics relevant to the problem objective?
-- Does the student interpret the results of their model for purposes of inference?
-- Is domain knowledge demonstrated when interpreting results?
-
-### Project Organization
-
-- Are modules imported correctly (using appropriate aliases)?
-- Does the README provide a good executive summary of the project?
-- Is markdown formatting used appropriately to structure notebooks?
-- Are there an appropriate amount of comments to support the code?
-- Are files & directories organized correctly?
-- Are there unnecessary files included?
-- Do files and directories have well-structured, appropriate, consistent names?
-
-### Python Syntax and Control Flow
-
-- Is care taken to write human readable code?
-- Is the code syntactically correct (no runtime errors)?
-- Does the code generate desired results (logically correct)?
-- Does the code follows general best practices and style guidelines?
-- Are Pandas and sklearn functions used appropriately?
-
-## Note
-
-Do not duplicate someone else's analysis and make sure to give credit to any resources you used. :)
-
-Have fun!
